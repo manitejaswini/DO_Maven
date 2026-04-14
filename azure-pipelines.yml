@@ -1,17 +1,14 @@
 trigger:
-- main
+  - main # Adjust as per your branch strategy
 
 pool:
-  name: do_rec   # correct format
+  vmImage: 'ubuntu-latest' # You can use self hosted agent
 
 steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.17'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean install'
+  - task: Maven@3
+    displayName: 'Maven Build and Regression Test'
+    inputs:
+      mavenPomFile: 'pom.xml' # Ensure the correct path to your pom.xml
+      goals: 'clean test'
+      publishJUnitResults: true # Publish JUnit test results
+      testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
